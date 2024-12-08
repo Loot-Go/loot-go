@@ -38,7 +38,7 @@ const MenuBtn: React.FC<MenuBtnProps> = ({ type }) => {
 export default function Footer() {
   return (
     <footer className="fixed bottom-0 w-full">
-      <div className="mx-auto flex w-full max-w-md justify-evenly rounded-t-[30px] bg-black pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-4 shadow shadow-white">
+      <div className="mx-auto flex w-full max-w-md justify-evenly rounded-t-[30px] bg-black pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-4">
         <MenuBtn type="map" />
         <MenuBtn type="market" />
         {/* <MenuBtn type="portfolio" /> */}

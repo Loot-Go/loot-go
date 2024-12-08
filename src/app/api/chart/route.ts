@@ -1,18 +1,10 @@
-import { NextResponse } from "next/server";
-
 export async function GET(request: Request) {
-  return NextResponse.json([
-    [1704067241331, 42261.0406175669],
-    [1704070847420, 42493.2764087546],
-    [1704074443652, 426540731066594],
-  ]);
-
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     const vsCurrency = searchParams.get("vs_currency") || "usd"; // Default to 'usd'
-    const from = searchParams.get("from");
-    const to = searchParams.get("to");
+    const from = searchParams.get("from") ?? "1731629930";
+    const to = searchParams.get("to") ?? "1731729930";
 
     if (!from || !to) {
       return Response.json(
@@ -25,6 +17,8 @@ export async function GET(request: Request) {
     }
 
     const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=${vsCurrency}&from=${from}&to=${to}`;
+
+    console.log(url);
 
     const response = await fetch(url, {
       method: "GET",
@@ -40,6 +34,8 @@ export async function GET(request: Request) {
     }
 
     const data = await response.json();
+
+    console.log(data);
     const prices = data.prices;
 
     return Response.json(prices);

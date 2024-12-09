@@ -12,7 +12,7 @@ const Transaction = ({
   fee: number;
 }) => {
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-neutral-600 p-2 px-3">
+    <div className="mb-3 flex items-center justify-between rounded-2xl bg-neutral-600 p-2 px-3">
       <div className="flex w-full items-center">
         <div className="rounded-full border border-gray-700 bg-neutral-700 p-2">
           {transactionPosition === "out" && (

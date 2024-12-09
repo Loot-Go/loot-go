@@ -4,6 +4,9 @@ import ChartOption from "@/components/market/chart-option";
 import Percentage from "@/components/market/percentage";
 import { PriceChart } from "@/components/market/price-chart";
 import { formatDate } from "@/lib/helpers";
+
+import { getSigner } from "@dynamic-labs/ethers-v6";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
@@ -18,6 +21,7 @@ interface DetailsPageProps {
 
 const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
   const coinId = params.id;
+  const { primaryWallet } = useDynamicContext();
 
   const [activeChart, setActiveChart] = useState("7d");
   const [chartValues, setChartValues] = useState([]);
@@ -46,6 +50,16 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
   useEffect(() => {
     getChartData();
   }, [activeChart]);
+
+  const buyHandler = async () => {
+    if (primaryWallet) {
+      const signer = await getSigner(primaryWallet);
+
+      if (signer) {
+        // do the tx?
+      }
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#000] text-white">
@@ -96,10 +110,16 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
       </div>
 
       <div className="mt-28 flex space-x-2 bg-[#000] px-5 pb-10">
-        <button className="flex-1 rounded-xl bg-[#F15950] px-4 py-3 font-bold">
+        <button
+          onClick={buyHandler}
+          className="flex-1 rounded-xl bg-[#F15950] px-4 py-3 font-bold"
+        >
           BUY
         </button>
-        <button className="flex-1 rounded-xl bg-[#10DC78] px-4 py-3 font-bold">
+        <button
+          onClick={buyHandler}
+          className="flex-1 rounded-xl bg-[#10DC78] px-4 py-3 font-bold"
+        >
           SELL
         </button>
       </div>

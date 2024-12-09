@@ -15,6 +15,10 @@ type User = {
 };
 
 export const config = {
+  session: {
+    strategy: "jwt",
+    maxAge: 10 * 24 * 60 * 60, // 10 days
+  },
   providers: [
     Credentials({
       name: "Credentials",

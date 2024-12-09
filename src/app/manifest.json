@@ -1,0 +1,10 @@
+{
+  "name": "LootGo",
+  "short_name": "LootGo",
+  "description": "LootGo : Turn your daily life into a treasure hunt!",
+  "theme_color": "#d5fc44",
+  "background_color": "#121212",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

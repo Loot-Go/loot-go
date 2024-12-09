@@ -41,7 +41,7 @@ export default function Footer() {
       <div className="mx-auto flex w-full max-w-md justify-evenly rounded-t-[30px] bg-black pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-4 shadow shadow-white">
         <MenuBtn type="map" />
         <MenuBtn type="market" />
-        <MenuBtn type="portfolio" />
+        {/* <MenuBtn type="portfolio" /> */}
       </div>
     </footer>
   );

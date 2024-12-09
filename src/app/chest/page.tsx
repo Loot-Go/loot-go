@@ -18,16 +18,18 @@ const ChestPage = () => {
     >
       <div className="grid h-full min-h-screen place-items-center items-center">
         <div className="flex flex-col items-center space-y-20">
-          <div className="flex">
-            <img
-              src="https://s2.coinmarketcap.com/static/img/coins/64x64/74.png"
-              className="h-[80px] w-[80px]"
-            />
-            <div className="ml-2 flex flex-1 flex-col items-center space-y-2">
-              <b className="text-6xl font-extrabold text-white">x 53,000</b>
-              <p className="text-xl font-bold text-white">($1)</p>
+          {isOpen ? (
+            <div className="flex">
+              <img
+                src="https://assets.coingecko.com/coins/images/39251/standard/miggles.jpg?1721283044"
+                className="h-[80px] w-[80px] rounded-full"
+              />
+              <div className="ml-2 flex flex-1 flex-col items-center space-y-2">
+                <b className="text-6xl font-extrabold text-white">x 13,000</b>
+                <p className="text-xl font-bold text-white">($1790.035)</p>
+              </div>
             </div>
-          </div>
+          ) : null}
           <img
             src={isOpen ? "/chest_open.png" : "/chest.png"}
             alt="chest"
@@ -36,6 +38,11 @@ const ChestPage = () => {
 
           <button
             onClick={() => {
+              if (isOpen) {
+                router.push("/?collected=true");
+                return;
+              }
+
               router.push("?collect=true");
               setIsOpen(true);
               confetti({

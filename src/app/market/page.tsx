@@ -1,35 +1,33 @@
 "use client";
 
 import CoinCard from "@/components/market/coin-card";
+import Percentage from "@/components/market/percentage";
 
 const ChestPage = () => {
   return (
-    <div className={`bg-[#000] min-h-screen text-white`}>
-      <div className="text-center pt-5 grid place-items-center">
+    <div className={`min-h-screen bg-[#121212] text-white`}>
+      <div className="grid place-items-center pt-5 text-center">
         <div className="font-bold">Market</div>
 
-        <div className="text-center mt-5 mb-2">Total Assets</div>
+        <div className="mb-2 mt-5 text-center">Total Assets</div>
 
         <div className="text-3xl font-bold">$3,291</div>
 
-        <div className="text-center text-green-500">2.41%</div>
+        <Percentage percentage="91%" />
 
         <div className="flex flex-col items-center">
-          <img src="/add_cash.png" className="w-[40px] h-[40px] mt-10" />
-          <div className="text-center">Add Cash</div>
+          <img src="/add_cash.png" className="mt-10 h-[40px] w-[40px]" alt="" />
+          <div className="mt-2 text-center">Add Cash</div>
         </div>
       </div>
       <div className="mt-10">
-        <div className="flex justify-between pr-5 items-center">
+        <div className="flex items-center justify-between px-2">
           <b>Cash $1,200</b>
-          <img src="/plus.png" className="w-[40px] h-[40px]" />
+          <img src="/plus.png" className="h-[40px] w-[40px]" alt="" />
         </div>
-        <p className="text-left mt-6">My coins 😎</p>
+        <p className="mt-6 pl-2 text-left">My coins 😎</p>
 
-        <div className="space-y-5 px-2 mt-5">
-          <CoinCard />
-          <CoinCard />
-          <CoinCard />
+        <div className="mt-5 space-y-5 px-2">
           <CoinCard />
         </div>
       </div>

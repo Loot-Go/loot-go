@@ -8,14 +8,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getCsrfToken, SessionProvider } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { http } from "viem";
-import { mainnet } from "viem/chains";
+import { base } from "viem/chains";
 import { createConfig, WagmiProvider } from "wagmi";
 
 const config = createConfig({
-  chains: [mainnet],
+  chains: [base],
   multiInjectedProviderDiscovery: false,
   transports: {
-    [mainnet.id]: http(),
+    [base.id]: http(),
   },
 });
 

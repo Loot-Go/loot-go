@@ -10,11 +10,13 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md}\""
   },
   "dependencies": {
+    "@1inch/fusion-sdk": "^2.1.5",
     "@auth/core": "^0.37.3",
     "@coinbase/onchainkit": "^0.35.5",
     "@dynamic-labs/ethereum": "^3.6.2",
     "@dynamic-labs/ethers-v6": "^3.6.3",
     "@dynamic-labs/flow": "^3.6.2",
+    "@dynamic-labs/sdk-react": "^0.18.30",
     "@dynamic-labs/sdk-react-core": "^3.6.2",
     "@dynamic-labs/wagmi-connector": "^3.6.2",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -28,7 +30,11 @@
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "ethers": "^6.1.0",
+    "limit-order": "link:@1inch/fusion-sdk/limit-order",
     "lucide-react": "^0.459.0",
     "mapkit-react": "^1.15.2",
     "next": "14.2.18",
@@ -47,7 +53,8 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.1",
     "viem": "^2.21.45",
-    "wagmi": "^2.12.32"
+    "wagmi": "^2.12.32",
+    "web3": "^4.15.0"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.4",

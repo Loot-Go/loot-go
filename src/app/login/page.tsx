@@ -5,14 +5,28 @@ import {
   DynamicConnectButton,
   useDynamicContext,
 } from "@dynamic-labs/sdk-react-core";
-import { signOut } from "next-auth/react";
-import { useRef, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const { status } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { sdkHasLoaded, user, handleLogOut } = useDynamicContext();
   const btnRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      const redirectTo = searchParams.get("redirectTo");
+
+      if (redirectTo) {
+        router.replace(redirectTo);
+      }
+    }
+  }, [status, searchParams, router]);
 
   const signOutFn = async () => {
     await handleLogOut();

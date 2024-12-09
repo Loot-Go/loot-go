@@ -1,8 +1,9 @@
 import AppLayout from "@/components/layout";
-import type { Metadata } from "next";
+import { metadata, viewport } from "@/config/metadata";
 import localFont from "next/font/local";
 import { Suspense } from "react";
 import "./globals.css";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -14,10 +15,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "LootGo",
-  description: "",
-};
+export { metadata, viewport };
 
 export default function RootLayout({
   children,

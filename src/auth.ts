@@ -1,9 +1,7 @@
-import NextAuth from "next-auth";
-
-import type { NextAuthConfig } from "next-auth";
-
 import { validateJWT } from "@/lib/authHelpers";
 import Credentials from "@auth/core/providers/credentials";
+import type { NextAuthConfig } from "next-auth";
+import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
 
 type User = {
@@ -36,9 +34,11 @@ export const config = {
           // Transform the JWT payload into your user object
           const user: User = {
             id: jwtPayload.sub || "", // Assuming 'sub' is the user ID
-            name: jwtPayload.name || "", // Replace with actual field from JWT payload
-            email: jwtPayload.email || "", // Replace with actual field from JWT payload
-            walletAddress: jwtPayload.verified_credentials[0]?.address || "",
+            name: (jwtPayload.name as string) || "", // Replace with actual field from JWT payload
+            email: (jwtPayload.email as string) || "", // Replace with actual field from JWT payload
+            walletAddress:
+              (jwtPayload.verified_credentials as { address: string }[])[0]
+                ?.address || "",
             // Map other fields as needed
           };
           return user;

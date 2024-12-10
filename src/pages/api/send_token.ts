@@ -23,7 +23,7 @@ const WALLET_SECRET_KEY = process.env.WALLET_SECRET_KEY;
 
 const TOKENS = [
   { name: "Michi", address: "5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp", decimals: 6 },
-  { name: "GIGA", address: "63LfDmNb3MQ8mw9MtZ2To9bEA2M71kZUUGq5tiJxcqj9", decimals: 5 },
+  { name: "WIF", address: "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm", decimals: 6 },
   { name: "Bonk", address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", decimals: 5 }
 ];
 
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const walletTokenAccount = await getAssociatedTokenAddress(mintAddress, walletKeypair.publicKey);
     const recipientTokenAccount = await getAssociatedTokenAddress(mintAddress, recipientPubKey);
 
-    const amountOfTokens = amount * 10 ** randomToken.decimals
+    const amountOfTokens = randomToken.name === "WIF" ? (amount * 10 ** randomToken.decimals) / 10 : amount * 10 ** randomToken.decimals;
 
     const transaction = new Transaction();
     const recipientAccountInfo = await connection.getAccountInfo(recipientTokenAccount);

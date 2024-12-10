@@ -101,23 +101,30 @@ const AppleMaps: React.FC<MapsProps> = ({
 
     const timeout = setTimeout(async () => {
       const cachedCoordinates = localStorage.getItem("loot-box-coordinates");
-      if (cachedCoordinates) {
-        setLootBoxCoordinates(JSON.parse(cachedCoordinates));
-        return;
+      const cachedCoordinatesJson = cachedCoordinates
+        ? JSON.parse(cachedCoordinates)
+        : null;
+
+      if (cachedCoordinatesJson) {
+        if (!(accurateLocation && cachedCoordinatesJson.length <= 10)) {
+          setLootBoxCoordinates(cachedCoordinatesJson);
+          return;
+        }
       }
 
       const coordinates = await getNearbyRoadCoordinates(userCoordinates);
+
       if (coordinates && coordinates.length > 0) {
-        setLootBoxCoordinates(coordinates);
+        setLootBoxCoordinates([...cachedCoordinatesJson, ...coordinates]);
         localStorage.setItem(
           "loot-box-coordinates",
-          JSON.stringify(coordinates),
+          JSON.stringify([...cachedCoordinatesJson, ...coordinates]),
         );
       }
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [userCoordinates]);
+  }, [userCoordinates, accurateLocation]);
 
   return (
     <div

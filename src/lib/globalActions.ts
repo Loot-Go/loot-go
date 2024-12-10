@@ -63,31 +63,30 @@ export async function getNearbyRoadCoordinates(coordinates: {
     const pattern2 = /<node.*lat="(.+)".*lon="(.+)"\/>/;
     const match1 = data.match(pattern1);
 
+    if (!match1) return [];
+
+    const randomMatches = match1
+      .sort(() => 0.5 - Math.random())
+      .slice(0, Math.min(10, match1.length - 1));
+
     const coordinates: {
       lat: number;
       lng: number;
     }[] = [];
 
-    if (match1) {
-      match1.forEach((str) => {
-        try {
-          const match2 = str.match(pattern2);
-          if (match2) {
-            coordinates.push({
-              lat: parseFloat(match2[1]),
-              lng: parseFloat(match2[2]),
-            });
-          }
-        } catch {}
-      });
-    }
+    randomMatches.forEach((str) => {
+      try {
+        const match2 = str.match(pattern2);
+        if (match2) {
+          coordinates.push({
+            lat: parseFloat(match2[1]),
+            lng: parseFloat(match2[2]),
+          });
+        }
+      } catch {}
+    });
 
-    // select 10 random coordinates from the array
-    const randomCoordinates = coordinates
-      .sort(() => 0.5 - Math.random())
-      .slice(0, Math.min(10, coordinates.length - 1));
-
-    return randomCoordinates;
+    return coordinates;
   } catch (error) {
     console.error(error);
   }

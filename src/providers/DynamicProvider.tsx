@@ -3,6 +3,7 @@
 import { DynamicContextProvider, getAuthToken } from "@/lib/dynamic";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import { FlowWalletConnectors } from "@dynamic-labs/flow";
+import { SolanaWalletConnectors } from "@dynamic-labs/solana";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getCsrfToken, SessionProvider } from "next-auth/react";
@@ -33,7 +34,11 @@ export default function DynamicProvider({
       <DynamicContextProvider
         settings={{
           environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID!,
-          walletConnectors: [EthereumWalletConnectors, FlowWalletConnectors],
+          walletConnectors: [
+            EthereumWalletConnectors,
+            SolanaWalletConnectors as () => [],
+            FlowWalletConnectors,
+          ],
           events: {
             onAuthSuccess: async () => {
               const authToken = getAuthToken();

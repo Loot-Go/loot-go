@@ -16,6 +16,7 @@ interface MapsProps {
     lng: number;
     type: "box1" | "box2" | "box3";
     disabled?: boolean;
+    meme_coin?: string;
   }[];
   enableUserLocation?: boolean;
   disableBodyScroll?: boolean;

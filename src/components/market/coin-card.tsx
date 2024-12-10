@@ -20,7 +20,7 @@ const CoinCard = ({
 
   return (
     <Link
-      href="/details/mister-miggles"
+      href={`/details/${symbol}?price=${price}&marketCap=${marketCap}&logo=${logo}`}
       className="mb-3 flex items-center justify-between rounded-2xl bg-neutral-600 p-2 px-3"
     >
       <div className="flex w-full items-center">

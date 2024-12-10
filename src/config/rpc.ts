@@ -1,0 +1,6 @@
+export const chilizSpicy = "https://spicy-rpc.chiliz.com"
+export const baseSepolia = "https://sepolia.base.org"
+export const flowTestnet = "https://testnet.evm.nodes.onflow.org"
+export const celoAlfajores = "https://alfajores-forno.celo-testnet.org"
+export const mantleSepolia = "https://rpc.sepolia.mantle.xyz"
+export const morphTestnet = "https://rpc-holesky.morphl2.io"

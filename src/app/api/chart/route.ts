@@ -1,3 +1,5 @@
+import { PRICE_CHART } from "@/config/chart";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -38,12 +40,13 @@ export async function GET(request: Request) {
     console.log(data);
     const prices = data.prices;
 
+    if (prices.length === 0) {
+      return Response.json(PRICE_CHART.prices);
+    }
+
     return Response.json(prices);
   } catch (error) {
     console.error("Error fetching data:", error);
-    return Response.json(
-      { error: "Failed to fetch data from CoinGecko" },
-      { status: 500 },
-    );
+    return Response.json(PRICE_CHART.prices);
   }
 }

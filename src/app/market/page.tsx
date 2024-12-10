@@ -270,21 +270,28 @@ const MarketPage = () => {
 
           <div className="relative z-10 grid place-items-center pt-16 text-center">
             {wallet ? (
-              <Identity
-                className="my-5"
-                address={wallet as `0x${string}`}
-                schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
-              >
-                <Avatar />
-                <Name className="ml-5">
-                  <Badge />
-                </Name>
-              </Identity>
+              <div className="relative flex items-center justify-center">
+                <img
+                  src="https://i.imgur.com/VZ4ykml.png"
+                  className="absolute left-0 top-5 h-10 w-10 rounded-full"
+                />
+                <Identity
+                  className="my-5"
+                  address={wallet as `0x${string}`}
+                  schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
+                >
+                  <Avatar />
+
+                  <Name>
+                    <Badge />
+                  </Name>
+                </Identity>
+              </div>
             ) : null}
 
             <div className="text-3xl font-black">$3,291</div>
 
-            <Percentage percentage="91%" />
+            <Percentage percentage="2.1%" />
 
             <Link
               href={"/deposit"}

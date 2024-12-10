@@ -13,12 +13,12 @@ const RedirectToLogin = ({ status }: { status?: boolean }) => {
   }, [status]);
 
   return (
-    <div className="text-md flex min-h-screen items-center justify-center">
+    <div className="text-md flex min-h-screen flex-col items-center justify-center gap-y-4">
       <p>Loading...</p>
-      <p>
-        Back to profile page
+      <p className="text-center text-xs text-gray-400">
+        Back to
         <a href="/login" className="ml-1 underline">
-          login page
+          Profile
         </a>
       </p>
     </div>

@@ -35,6 +35,8 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-y-28 bg-[#121212] text-white">
+      {!user ? <img src={"/assets/icons/favicon-96x96.png"} alt="" /> : null}
+
       <h1 className="text-center text-3xl font-bold">
         Turn your daily life
         <br /> into treasure hunt
@@ -46,35 +48,59 @@ export default function LoginPage() {
         </DynamicConnectButton>
       </div>
 
-      <Button
-        style={{
-          background: "linear-gradient(180deg, #D5FC44 0%, #A9D600 100%)",
-        }}
-        size={"icon"}
-        className="relative h-auto w-3/4 overflow-hidden rounded-full py-3 text-2xl font-bold text-black"
-        disabled={!sdkHasLoaded || loading}
-        onClick={() => {
-          if (!user) {
-            setLoading(true);
-            btnRef.current?.click();
-          } else {
-            signOutFn();
-          }
-        }}
-      >
-        {!user ? "Sign up" : "Sign out"}
-        {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70">
-            <ImSpinner2 className="animate-spin" size={30} />
-          </div>
-        )}
-      </Button>
+      {!user ? (
+        <Button
+          style={{
+            background: "linear-gradient(180deg, #D5FC44 0%, #A9D600 100%)",
+          }}
+          size={"icon"}
+          className="relative h-auto w-3/4 overflow-hidden rounded-full py-3 text-2xl font-bold text-black"
+          disabled={!sdkHasLoaded || loading}
+          onClick={() => {
+            if (!user) {
+              setLoading(true);
+              btnRef.current?.click();
+            } else {
+              signOutFn();
+            }
+          }}
+        >
+          {!user ? "Sign up" : "Sign out"}
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70">
+              <ImSpinner2 className="animate-spin" size={30} />
+            </div>
+          )}
+        </Button>
+      ) : null}
 
-      {user && (
-        <a className="text-gray-500" href="/chest">
-          Back to dashboard
-        </a>
-      )}
+      {user ? (
+        <div className="flex flex-col items-center gap-x-4 space-y-6">
+          <a className="text-gray-500" href="/chest">
+            Back to dashboard
+          </a>
+
+          <Button
+            size={"icon"}
+            disabled={!sdkHasLoaded || loading}
+            onClick={() => {
+              if (!user) {
+                setLoading(true);
+                btnRef.current?.click();
+              } else {
+                signOutFn();
+              }
+            }}
+          >
+            Sign out
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70">
+                <ImSpinner2 className="animate-spin" size={30} />
+              </div>
+            )}
+          </Button>
+        </div>
+      ) : null}
     </div>
   );
 }

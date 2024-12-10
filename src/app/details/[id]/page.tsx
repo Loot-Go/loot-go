@@ -5,12 +5,19 @@ import ChartOption from "@/components/market/chart-option";
 import Percentage from "@/components/market/percentage";
 import { PriceChart } from "@/components/market/price-chart";
 import { formatDate } from "@/lib/helpers";
-import { FusionSDK, NetworkEnum, OrderStatus, Web3Like, Web3ProviderConnector, } from "@1inch/fusion-sdk";
+import {
+  FusionSDK,
+  NetworkEnum,
+  OrderStatus,
+  Web3Like,
+  Web3ProviderConnector,
+} from "@1inch/fusion-sdk";
+import { getSigner } from "@dynamic-labs/ethers-v6";
 import { useDynamicContext, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
-import { getSigner, getWeb3Provider } from "@dynamic-labs/ethers-v6";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { FC, useEffect, useState } from "react";
 import CountUp from "react-countup";
 
 interface DetailsPageProps {
@@ -21,6 +28,17 @@ interface DetailsPageProps {
 
 const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
   const coinId = params.id;
+
+  const searchParams = useSearchParams();
+  const logo = searchParams?.get("logo");
+  const price = Number(searchParams?.get("price")) * 15353;
+  const marketCap = searchParams?.get("marketCap");
+
+  console.log("________________________________________");
+  console.log({ logo, price, marketCap });
+  console.log("________________________________________");
+
+  console.log(params);
   const isLoggedIn = useIsLoggedIn();
 
   const { primaryWallet } = useDynamicContext();
@@ -50,79 +68,82 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
   };
 
   const buyHandler = async () => {
-
-    console.log('buyHandler')
-    console.log(primaryWallet)
+    console.log("buyHandler");
+    console.log(primaryWallet);
     if (primaryWallet) {
       const signer = await getSigner(primaryWallet);
-      const provider = signer.provider
-      console.log(signer)
-      console.log(provider)
+      const provider = signer.provider;
+      console.log(signer);
+      console.log(provider);
       const ethersProviderConnector: Web3Like = {
         eth: {
           call(transactionConfig): Promise<string> {
-            return signer.call(transactionConfig)
-          }
+            return signer.call(transactionConfig);
+          },
         },
-        extend(): void { }
-      }
-      const connector = new Web3ProviderConnector(
-        ethersProviderConnector
-      )
-      const DEV_PORTAL_API_TOKEN = process.env.NEXT_PUBLIC_1INCH_API_KEY!
+        extend(): void {},
+      };
+      const connector = new Web3ProviderConnector(ethersProviderConnector);
+      const DEV_PORTAL_API_TOKEN = process.env.NEXT_PUBLIC_1INCH_API_KEY!;
 
       const sdk = new FusionSDK({
-        url: 'https://api.1inch.dev/fusion',
+        url: "https://api.1inch.dev/fusion",
         network: NetworkEnum.COINBASE,
         blockchainProvider: connector,
-        authKey: DEV_PORTAL_API_TOKEN
-      })
+        authKey: DEV_PORTAL_API_TOKEN,
+      });
       const params = {
-        fromTokenAddress: '0xc5fecC3a29Fb57B5024eEc8a2239d4621e111CBE', // 1inch
-        toTokenAddress: '0x4200000000000000000000000000000000000006',  // WETH
-        amount: '1000000000000000000', // 10 1inch
+        fromTokenAddress: "0xc5fecC3a29Fb57B5024eEc8a2239d4621e111CBE", // 1inch
+        toTokenAddress: "0x4200000000000000000000000000000000000006", // WETH
+        amount: "1000000000000000000", // 10 1inch
         walletAddress: signer.address,
-        source: 'sdk-test'
-      }
+        source: "sdk-test",
+      };
 
-      const quote = await sdk.getQuote(params)
+      const quote = await sdk.getQuote(params);
 
-      const dstTokenDecimals = 18
-      const preparedOrder = await sdk.createOrder(params)
+      const dstTokenDecimals = 18;
+      const preparedOrder = await sdk.createOrder(params);
 
-      const info = await sdk.submitOrder(preparedOrder.order, preparedOrder.quoteId)
+      const info = await sdk.submitOrder(
+        preparedOrder.order,
+        preparedOrder.quoteId,
+      );
 
-      console.log('OrderHash', info.orderHash)
+      console.log("OrderHash", info.orderHash);
 
-      const start = Date.now()
+      const start = Date.now();
 
       while (true) {
         try {
-          const data = await sdk.getOrderStatus(info.orderHash)
+          const data = await sdk.getOrderStatus(info.orderHash);
 
           if (data.status === OrderStatus.Filled) {
-            console.log('fills', data.fills)
-            break
+            console.log("fills", data.fills);
+            break;
           }
 
           if (data.status === OrderStatus.Expired) {
-            console.log('Order Expired')
-            break
+            console.log("Order Expired");
+            break;
           }
 
           if (data.status === OrderStatus.Cancelled) {
-            console.log('Order Cancelled')
-            break
+            console.log("Order Cancelled");
+            break;
           }
         } catch (e) {
-          console.log(e)
+          console.log(e);
         }
-
       }
 
-      console.log('Order executed for', (Date.now() - start) / 1000, 'sec')
+      console.log("Order executed for", (Date.now() - start) / 1000, "sec");
     }
   };
+
+  useEffect(() => {
+    getChartData();
+  }, []);
 
   return (
     <AccountWrapper status={isLoggedIn}>
@@ -134,14 +155,22 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
         </div>
         <div className="my-10 grid place-items-center pt-20">
           <img
-            src="https://assets.coingecko.com/coins/images/39251/standard/miggles.jpg?1721283044"
+            src={
+              logo ??
+              "https://assets.coingecko.com/coins/images/39251/standard/miggles.jpg?1721283044"
+            }
             className="h-[40px] w-[40px] rounded-full"
             alt=""
           />
           <b className="mt-4 text-2xl font-bold">
-            $ <CountUp duration={1} className="counter" end={3260.035} />
+            ${" "}
+            <CountUp
+              duration={1}
+              className="counter"
+              end={Number(price ?? 0.42)}
+            />
           </b>
-          <Percentage percentage="91%" />
+          <Percentage percentage="4.5%" />
         </div>
 
         <div className="mb-20">

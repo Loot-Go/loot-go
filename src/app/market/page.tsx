@@ -1,7 +1,6 @@
 "use client";
 
 import AccountWrapper from "@/components/common/account-wrapper";
-
 import CoinCard from "@/components/market/coin-card";
 import Percentage from "@/components/market/percentage";
 import Transaction from "@/components/market/transactions";
@@ -210,14 +209,14 @@ const MarketPage = () => {
       setIsMemeCoinLoading(false);
     }
   };
-  const fusion = async() => {
+  const fusion = async () => {
     try {
-      const response = await axios.get('/api/fusion');
+      const response = await axios.get("/api/fusion");
       console.log(response.data);
     } catch (error) {
-      console.error('Error fetching fusion orders:', error);
+      console.error("Error fetching fusion orders:", error);
     }
-  }
+  };
 
   // Fetch data only once when component mounts
   useEffect(() => {
@@ -337,6 +336,7 @@ const MarketPage = () => {
 
               {tab === "Portfolio" && (
                 <div className="pb-10">
+                  {tokens.length > 0 && <CoinCard />}
                   {isTokenLoading ? (
                     <div className="flex h-52 w-full items-center justify-center">
                       <SpinnerIcon className="h-10 w-10 animate-spin" />

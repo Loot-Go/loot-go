@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LootGO: Turning Daily Life into a Treasure Hunt for Memecoins
 
-## Getting Started
+## Problem / Background
 
-First, run the development server:
+Crypto, especially memecoins, offers the potential for massive returns, but significant barriers prevent mass adoption. These include:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Tech Barriers: Wallet setup, on-ramping, and high transaction fees are daunting for new users.
+2. Complex User Experience: Most crypto apps are designed for tech-savvy users, not everyday people.
+3. Pay-to-Play Model: Many crypto games require upfront payments, alienating casual users.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This results in crypto missing a large speculative entertainment market and make it hard to onboard new users.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Product Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+LootGO transforms daily life into a treasure hunt for memecoins, combining proven Web2 gameplay with Web3 rewards.
 
-## Learn More
+### Features:
 
-To learn more about Next.js, take a look at the following resources:
+Walk and Earn: Collect loot boxes by walking (e.g., step goals or specific locations).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open Loot Boxes: Earn random memecoins for free.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Build Your Portfolio: Start creating and trading your crypto portfolio seamlessly.
 
-## Deploy on Vercel
+### LootGO ensures:
+1. Free-to-Play onboarding.
+2. Embedded wallets for smooth user experience.
+3. The excitement of speculation through diversified memecoin rewards.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Differentiation:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Unlike speculative move-to-earn apps, LootGO acts as a platform offering access to multiple speculative assets. Diversification mitigates dependency on single token prices, fostering sustained user engagement.
+
+Progression:
+
+LootGO hooks users through free rewards, engages them with portfolio growth (2x-10x potential), and monetizes through trading fees and top-ups.

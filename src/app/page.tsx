@@ -15,21 +15,41 @@ export default async function Home() {
               lat: 13.721714,
               lng: 100.590783,
               type: "box1",
+              disabled: true,
             },
             {
               lat: 13.720587,
               lng: 100.589821,
               type: "box2",
+              disabled: true,
             },
             {
               lat: 13.720803,
               lng: 100.59085,
               type: "box3",
+              disabled: true,
             },
             {
               lat: 13.721297,
               lng: 100.589829,
               type: "box2",
+              disabled: true,
+            },
+            {
+              lat: 13.7243611,
+              lng: 100.5585,
+              type: "box1",
+            },
+            {
+              lat: 13.7239,
+              lng: 100.5589,
+              type: "box3",
+            },
+            {
+              lat: 13.7243211,
+              lng: 100.5565,
+              type: "box2",
+              disabled: true,
             },
           ]}
           paddingBottom={70}

@@ -69,6 +69,12 @@ export default function LoginPage() {
           </div>
         )}
       </Button>
+
+      {user && (
+        <a className="text-gray-500" href="/chest">
+          Back to dashboard
+        </a>
+      )}
     </div>
   );
 }

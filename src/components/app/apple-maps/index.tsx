@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { toast } from "sonner";
 
 interface MapsProps {
   token: string;
@@ -14,6 +15,7 @@ interface MapsProps {
     lat: number;
     lng: number;
     type: "box1" | "box2" | "box3";
+    disabled?: boolean;
   }[];
   enableUserLocation?: boolean;
   disableBodyScroll?: boolean;
@@ -129,14 +131,31 @@ const AppleMaps: React.FC<MapsProps> = ({
                   latitude={coordinates.lat}
                   longitude={coordinates.lng}
                 >
-                  <Link href={"/chest"}>
-                    <Image
-                      height={40}
-                      width={40}
-                      src={`/${coordinates.type}.png`}
-                      alt="box"
-                    />
-                  </Link>
+                  {coordinates.disabled ? (
+                    <div
+                      onClick={() => {
+                        toast.error(
+                          "You must be closer to this chest to open it.",
+                        );
+                      }}
+                    >
+                      <Image
+                        height={40}
+                        width={40}
+                        src={`/${coordinates.type}.png`}
+                        alt="box"
+                      />
+                    </div>
+                  ) : (
+                    <Link href={"/chest"}>
+                      <Image
+                        height={40}
+                        width={40}
+                        src={`/${coordinates.type}.png`}
+                        alt="box"
+                      />
+                    </Link>
+                  )}
                 </Annotation>
               ))
             : null}

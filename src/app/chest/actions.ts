@@ -7,13 +7,14 @@ export const getRandomAirdrop = async (walletAddress: string) => {
   if (!walletAddress) {
     return null;
   }
-  const randomNumber = Math.floor(Math.random() * 1000000);
+
+  const randomNumber = Math.floor(Math.random() * (600 - 10 + 1)) + 10;
 
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_BASE_URI}/api/send_token`,
     {
-      walletAddress,
-      randomNumber,
+      recipientAddress: walletAddress,
+      amount: randomNumber,
     },
   );
 
@@ -25,5 +26,6 @@ export const getRandomAirdrop = async (walletAddress: string) => {
     value: randomNumber ? Number(randomNumber) : 0,
     amount: randomNumber ? Number(randomNumber) * price : 0,
     image: "/token.jpg",
+    txId: data.txId as string,
   };
 };

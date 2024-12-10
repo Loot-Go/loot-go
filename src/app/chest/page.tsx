@@ -18,9 +18,10 @@ const ChestPage = () => {
   const userWallet = userWallets[0]?.address;
 
   const [token, setToken] = useState<{
-    amount: string;
+    amount: number;
     image: string;
-    value: string;
+    value: number;
+    txId: string;
   } | null>(null);
 
   useEffect(() => {
@@ -100,6 +101,18 @@ const ChestPage = () => {
               {loading ? "Loading..." : isOpen ? "COLLECT" : "OPEN CHEST"}
             </button>
           </div>
+          {token?.txId ? (
+            <div>
+              <a
+                href={`https://solscan.io/tx/${token.txId}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-white underline hover:no-underline"
+              >
+                View tx on solscan!
+              </a>
+            </div>
+          ) : null}
         </div>
       </div>
     </AccountWrapper>

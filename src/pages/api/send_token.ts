@@ -104,9 +104,15 @@ export default async function handler(
       ),
     );
 
-    const txId = await sendAndConfirmTransaction(connection, transaction, [
-      walletKeypair,
-    ]);
+    const txId = await sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [walletKeypair],
+      {
+        commitment: "confirmed",
+        maxRetries: 3,
+      },
+    );
     return res.status(200).json({
       message: `SPL tokens (${randomToken.name}) transferred successfully`,
       txId,
@@ -119,3 +125,5 @@ export default async function handler(
     });
   }
 }
+
+export const maxDuration = 30;

@@ -24,6 +24,7 @@ export const getRandomAirdrop = async (walletAddress: string) => {
     const data = await response.data;
     console.log(data);
     return {
+      name: "Bonk",
       value: randomNumber ? Number(randomNumber) : 0,
       amount: randomNumber ? Number(randomNumber) * price : 0,
       image: "/bonk.png",

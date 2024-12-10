@@ -18,6 +18,7 @@ const ChestPage = () => {
   const userWallet = userWallets[0]?.address;
 
   const [token, setToken] = useState<{
+    name?: string;
     amount?: number;
     image?: string;
     value?: number;

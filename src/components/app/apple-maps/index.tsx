@@ -103,9 +103,9 @@ const AppleMaps: React.FC<MapsProps> = ({
       const cachedCoordinates = localStorage.getItem("loot-box-coordinates");
       const cachedCoordinatesJson = cachedCoordinates
         ? JSON.parse(cachedCoordinates)
-        : null;
+        : [];
 
-      if (cachedCoordinatesJson) {
+      if (cachedCoordinatesJson.length > 0) {
         if (!(accurateLocation && cachedCoordinatesJson.length <= 10)) {
           setLootBoxCoordinates(cachedCoordinatesJson);
           return;

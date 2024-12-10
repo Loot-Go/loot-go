@@ -51,6 +51,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const walletTokenAccount = await getAssociatedTokenAddress(mintAddress, walletKeypair.publicKey);
     const recipientTokenAccount = await getAssociatedTokenAddress(mintAddress, recipientPubKey);
 
+    const amountOfTokens = amount * 10 ** randomToken.decimals
+
     const transaction = new Transaction();
     const recipientAccountInfo = await connection.getAccountInfo(recipientTokenAccount);
 
@@ -70,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         walletTokenAccount,
         recipientTokenAccount,
         walletKeypair.publicKey,
-        amount,
+        amountOfTokens,
         [],
         TOKEN_PROGRAM_ID
       )

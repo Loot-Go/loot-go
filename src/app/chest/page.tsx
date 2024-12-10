@@ -89,16 +89,33 @@ const ChestPage = () => {
 
                 console.log(data);
 
-                if (data) {
-                  if (data.error) {
-                    setLoading(false);
-                    setRetry(true);
-                    return;
-                  }
-
-                  setRetry(false);
-                  setToken(data);
+                if (!data) {
+                  setLoading(false);
+                  return;
                 }
+
+                if (data.error) {
+                  setLoading(false);
+                  setRetry(true);
+                  return;
+                }
+
+                setRetry(false);
+                setToken(data);
+
+                const cachedTransactions = localStorage.getItem(
+                  "completed-transactions",
+                );
+                const completedTransactions = cachedTransactions
+                  ? JSON.parse(cachedTransactions)
+                  : [];
+                completedTransactions.push({
+                  ...data,
+                });
+                localStorage.setItem(
+                  "completed-transactions",
+                  JSON.stringify(completedTransactions),
+                );
 
                 router.push("?collect=true");
                 setIsOpen(true);

@@ -26,7 +26,7 @@ export const getRandomAirdrop = async (walletAddress: string) => {
     return {
       value: randomNumber ? Number(randomNumber) : 0,
       amount: randomNumber ? Number(randomNumber) * price : 0,
-      image: "/token.jpg",
+      image: "/bonk.png",
       txId: data.txId as string,
     };
   } catch (e) {

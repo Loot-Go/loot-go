@@ -18,6 +18,8 @@ type Coin = {
   image: string;
   marketCap: number;
   symbol: string;
+  value: number;
+  amount: number;
 };
 
 type TransactionType = {
@@ -249,6 +251,14 @@ const MarketPage = () => {
     fetchMemeCoins();
   }, []);
 
+  useEffect(() => {
+    const cachedTransactions = localStorage.getItem("completed-transactions");
+    const completedTransactions = cachedTransactions
+      ? JSON.parse(cachedTransactions)
+      : [];
+    setTokens(completedTransactions);
+  }, []);
+
   return (
     <AccountWrapper status={isLoggedIn}>
       <div className="min-h-screen bg-[#121212] text-white">
@@ -335,7 +345,6 @@ const MarketPage = () => {
 
               {tab === "Portfolio" && (
                 <div className="pb-10">
-                  {tokens.length > 0 && <CoinCard />}
                   {isTokenLoading ? (
                     <div className="flex h-52 w-full items-center justify-center">
                       <SpinnerIcon className="h-10 w-10 animate-spin" />
@@ -345,9 +354,8 @@ const MarketPage = () => {
                       <CoinCard
                         key={index}
                         logo={t.image}
-                        price={t.price}
-                        marketCap={t.marketCap}
-                        symbol={t.symbol}
+                        price={t.value}
+                        amount={t.amount}
                       />
                     ))
                   ) : (

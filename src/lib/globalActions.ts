@@ -51,7 +51,7 @@ export async function getNearbyRoadCoordinates(coordinates: {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
-      data: `(  way  (around:1000,${coordinates.lat}, ${coordinates.lng})  [highway~"^(primary|secondary|tertiary|residential|pedestrian)$"];>;);out;`,
+      data: `(  way  (around:500,${coordinates.lat}, ${coordinates.lng})  [highway~"^(primary|secondary|tertiary|residential|pedestrian)$"];>;);out;`,
     }),
   };
 
@@ -85,7 +85,7 @@ export async function getNearbyRoadCoordinates(coordinates: {
     // select 10 random coordinates from the array
     const randomCoordinates = coordinates
       .sort(() => 0.5 - Math.random())
-      .slice(0, Math.min(20, coordinates.length - 1));
+      .slice(0, Math.min(10, coordinates.length - 1));
 
     return randomCoordinates;
   } catch (error) {

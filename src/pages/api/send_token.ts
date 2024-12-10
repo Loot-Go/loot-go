@@ -1,33 +1,87 @@
-import { abi } from "@/config/abi";
-import { ethers } from "ethers";
+import { 
+  Connection, 
+  PublicKey, 
+  Keypair, 
+  Transaction, 
+  clusterApiUrl, 
+  sendAndConfirmTransaction 
+} from "@solana/web3.js";
+
+import { 
+  TOKEN_PROGRAM_ID, 
+  getAssociatedTokenAddress, 
+  createAssociatedTokenAccountInstruction, 
+  createTransferInstruction 
+} from "@solana/spl-token";
+
+import bs58 from "bs58";
+
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  console.log("Test");
-  console.log(req.body);
+const SOLANA_URL = clusterApiUrl("mainnet-beta");
+const WALLET_SECRET_KEY = process.env.WALLET_SECRET_KEY; 
 
-  const { walletAddress, randomNumber } = req.body;
+const TOKENS = [
+  { name: "Michi", address: "5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp", decimals: 6 },
+  { name: "GIGA", address: "63LfDmNb3MQ8mw9MtZ2To9bEA2M71kZUUGq5tiJxcqj9", decimals: 5 },
+  { name: "Bonk", address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", decimals: 5 }
+];
 
-  const providerUrl = "https://spicy-rpc.chiliz.com/";
-  const provider = new ethers.JsonRpcProvider(providerUrl);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
 
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+  try {
+    const { recipientAddress, amount } = req.body;
 
-  const contractAddress = "0x7CC3922213136A7Ce8467eCB02FdF4135D5d400F";
-  const tokenAddress = "0xe77C75Ec925b36A3F2AF8a1fc62769e5ef8201cA";
+    if (!recipientAddress || !amount) {
+      return res.status(400).json({ message: "Invalid request data" });
+    }
 
-  const contract = new ethers.Contract(contractAddress, abi, wallet);
-  const airdrop = await contract.distribute(
-    walletAddress,
-    tokenAddress,
-    ethers.parseEther(randomNumber.toString()).toString(),
-  );
+    const randomToken = TOKENS[Math.floor(Math.random() * TOKENS.length)];
+    const mintAddress = new PublicKey(randomToken.address);
 
-  return res.status(200).json({
-    message: "Token sent successfully",
-    airdrop,
-  });
+    const connection = new Connection(SOLANA_URL);
+    const walletSecretKey = bs58.decode(WALLET_SECRET_KEY!);
+    const walletKeypair = Keypair.fromSecretKey(walletSecretKey);
+
+    const recipientPubKey = new PublicKey(recipientAddress);
+
+    const walletTokenAccount = await getAssociatedTokenAddress(mintAddress, walletKeypair.publicKey);
+    const recipientTokenAccount = await getAssociatedTokenAddress(mintAddress, recipientPubKey);
+
+    const transaction = new Transaction();
+    const recipientAccountInfo = await connection.getAccountInfo(recipientTokenAccount);
+
+    if (!recipientAccountInfo) {
+      transaction.add(
+        createAssociatedTokenAccountInstruction(
+          walletKeypair.publicKey,
+          recipientTokenAccount,
+          recipientPubKey,
+          mintAddress
+        )
+      );
+    }
+
+    transaction.add(
+      createTransferInstruction(
+        walletTokenAccount,
+        recipientTokenAccount,
+        walletKeypair.publicKey,
+        amount,
+        [],
+        TOKEN_PROGRAM_ID
+      )
+    );
+
+    const txId = await sendAndConfirmTransaction(connection, transaction, [walletKeypair]);
+    return res.status(200).json({
+      message: `SPL tokens (${randomToken.name}) transferred successfully`,
+      txId
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to transfer SPL tokens", error: (error as any).message });
+  }
 }

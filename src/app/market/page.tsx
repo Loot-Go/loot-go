@@ -3,8 +3,6 @@
 import AccountWrapper from "@/components/common/account-wrapper";
 import CoinCard from "@/components/market/coin-card";
 import Percentage from "@/components/market/percentage";
-import Transaction from "@/components/market/transactions";
-import { Avatar, Badge, Identity, Name } from "@coinbase/onchainkit/identity";
 import {
   SpinnerIcon,
   useIsLoggedIn,
@@ -41,34 +39,22 @@ type MemeCoin = {
   lastUpdated: Date;
 };
 
-const MEME_COIN_FEEDS = {
-  DOGE: {
-    id: "0xdcef50dd0a4cd2dcc17e45df1676dcb336a11a61c69df7a0299b0150c672d25c",
-    name: "Dogecoin",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf2HxwuBXfjRHOAOGPrbyeJenImodJp68tow&s",
-  },
-  SHIB: {
-    id: "0xf0d57deca57b3da2fe63a493f4c25925fdfd8edf834b20f93e1f84dbd1504d4a",
-    name: "Shiba Inu",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5cbsp5ekCAFFcIBB64wKtCi0hFCTBN44aaw&s",
-  },
+export const MEME_COIN_FEEDS = {
   BONK: {
     id: "0x72b021217ca3fe68922a19aaf990109cb9d84e9ad004b4d2025ad6f529314419",
-    name: "Bonk",
+    name: "BONK",
     image: "https://cryptologos.cc/logos/bonk1-bonk-logo.png",
   },
-  PEPE: {
-    id: "0xd69731a2e74ac1ce884fc3890f7ee324b6deb66147055249568869ed700882e4",
-    name: "Pepe",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyZ-9hm3M7e97e9Ct2VdeF3na5a_06ZwOkhg&s",
+  MICHI: {
+    id: "0x63a45218d6b13ffd28ca04748615511bf70eff80a3411c97d96b8ed74a6decab",
+    name: "MICHI",
+    image: "https://s2.coinmarketcap.com/static/img/coins/200x200/30943.png",
   },
-  FLOKI: {
-    id: "0x6b1381ce7e874dc5410b197ac8348162c0dd6c0d4c9cd6322672d6c2b1d58293",
-    name: "Floki",
-    image: "https://cryptologos.cc/logos/floki-inu-floki-logo.png",
+  WIF: {
+    id: "0x4ca4beeca86f0d164160323817a4e42b10010a724c2217c6ee41b54cd4cc61fc",
+    name: "WIF",
+    image:
+      "https://s3.coinmarketcap.com/static-gravity/image/7979f3d6e1304b28affeac60654525d7.jpeg",
   },
 };
 
@@ -107,54 +93,65 @@ const MemeCoinCard = ({ coin }: { coin: MemeCoin }) => {
   };
 
   return (
-    <div className="rounded-2xl bg-[#1E1E1E] p-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <img
-            src={
-              MEME_COIN_FEEDS[coin.symbol as keyof typeof MEME_COIN_FEEDS]
-                ?.image || "/placeholder-coin.png"
-            }
-            className="h-10 w-10 rounded-full"
-            alt={coin.name}
-          />
-          <div>
-            <div className="font-bold">{coin.name}</div>
-            <div className="text-sm text-gray-400">{coin.symbol}</div>
-          </div>
-        </div>
-        <div className="text-right">
-          <div className="font-mono text-lg">${formatPrice(coin.price)}</div>
-          {coin.priceChange24h && (
-            <div
-              className={`flex items-center justify-end text-sm ${coin.priceChange24h >= 0 ? "text-green-500" : "text-red-500"}`}
-            >
-              {coin.priceChange24h >= 0 ? (
-                <ArrowUp className="h-4 w-4" />
-              ) : (
-                <ArrowDown className="h-4 w-4" />
+    <div className="mt-2">
+      <Link
+        href={`/details/${coin.name}?logo=${
+          MEME_COIN_FEEDS[coin.symbol as keyof typeof MEME_COIN_FEEDS]?.image ||
+          "/placeholder-coin.png"
+        }&marketCap=${coin.marketCap}&price=${formatPrice(coin.price)}`}
+      >
+        <div className="rounded-2xl bg-[#1E1E1E] p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <img
+                src={
+                  MEME_COIN_FEEDS[coin.symbol as keyof typeof MEME_COIN_FEEDS]
+                    ?.image || "/placeholder-coin.png"
+                }
+                className="h-10 w-10 rounded-full"
+                alt={coin.name}
+              />
+              <div>
+                <div className="font-bold">{coin.name}</div>
+                <div className="text-sm text-gray-400">{coin.symbol}</div>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="font-mono text-lg">
+                ${formatPrice(coin.price)}
+              </div>
+              {coin.priceChange24h && (
+                <div
+                  className={`flex items-center justify-end text-sm ${coin.priceChange24h >= 0 ? "text-green-500" : "text-red-500"}`}
+                >
+                  {coin.priceChange24h >= 0 ? (
+                    <ArrowUp className="h-4 w-4" />
+                  ) : (
+                    <ArrowDown className="h-4 w-4" />
+                  )}
+                  {Math.abs(coin.priceChange24h).toFixed(2)}%
+                </div>
               )}
-              {Math.abs(coin.priceChange24h).toFixed(2)}%
+            </div>
+          </div>
+          {(coin.volume24h || coin.marketCap) && (
+            <div className="mt-3 flex items-center justify-between text-sm text-gray-400">
+              {coin.volume24h && (
+                <div>
+                  <div className="text-xs">24h Volume</div>
+                  <div>{formatLargeNumber(coin.volume24h)}</div>
+                </div>
+              )}
+              {coin.marketCap && (
+                <div>
+                  <div className="text-xs">Market Cap</div>
+                  <div>{formatLargeNumber(coin.marketCap)}</div>
+                </div>
+              )}
             </div>
           )}
         </div>
-      </div>
-      {(coin.volume24h || coin.marketCap) && (
-        <div className="mt-3 flex items-center justify-between text-sm text-gray-400">
-          {coin.volume24h && (
-            <div>
-              <div className="text-xs">24h Volume</div>
-              <div>{formatLargeNumber(coin.volume24h)}</div>
-            </div>
-          )}
-          {coin.marketCap && (
-            <div>
-              <div className="text-xs">Market Cap</div>
-              <div>{formatLargeNumber(coin.marketCap)}</div>
-            </div>
-          )}
-        </div>
-      )}
+      </Link>
     </div>
   );
 };
@@ -250,11 +247,6 @@ const MarketPage = () => {
 
     fetchData();
     fetchMemeCoins();
-
-    // Set up interval to fetch meme coin prices
-    const interval = setInterval(fetchMemeCoins, 30000); // Update every 30 seconds
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -270,13 +262,13 @@ const MarketPage = () => {
 
           <div className="relative z-10 grid place-items-center pt-16 text-center">
             {wallet ? (
-              <div className="relative flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center">
                 <img
-                  src="https://i.imgur.com/VZ4ykml.png"
-                  className="absolute left-0 top-5 h-10 w-10 rounded-full"
+                  src="https://lh3.googleusercontent.com/bFUFCqQ7SiFyLP6v8hosWh5bngKK1cNL_GdDcnEERG6_OcYZ-jKTwTUFNk98VUREAwqUKncnhdlXUfOMVx_KFK1IvWAXQtYxeN8"
+                  className="left-0 top-5 h-32 w-32 rounded-full"
                 />
-                <Identity
-                  className="my-5"
+                {/* <Identity
+                  className="mb-5 mt-2"
                   address={wallet as `0x${string}`}
                   schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
                 >
@@ -285,11 +277,11 @@ const MarketPage = () => {
                   <Name>
                     <Badge />
                   </Name>
-                </Identity>
+                </Identity> */}
               </div>
             ) : null}
 
-            <div className="text-3xl font-black">$3,291</div>
+            <div className="mt-4 text-3xl font-black">$3,291</div>
 
             <Percentage percentage="2.1%" />
 
@@ -323,17 +315,17 @@ const MarketPage = () => {
             </div>
 
             <div className="mt-5 space-y-5 px-2">
-              <div className="grid grid-cols-3 place-items-center border-b border-gray-900">
+              <div className="grid grid-cols-2 place-items-center border-b border-gray-900">
                 <Tabs
                   onClick={() => setTab("Portfolio")}
                   label="Portfolio"
                   active={tab === "Portfolio"}
                 />
-                <Tabs
+                {/* <Tabs
                   onClick={() => setTab("History")}
                   active={tab === "History"}
                   label="History"
-                />
+                /> */}
                 <Tabs
                   onClick={() => setTab("Popular")}
                   active={tab === "Popular"}
@@ -364,7 +356,7 @@ const MarketPage = () => {
                 </div>
               )}
 
-              {tab === "History" && (
+              {/* {tab === "History" && (
                 <div className="pb-10">
                   {isTransactionLoading ? (
                     <div className="flex h-52 w-full items-center justify-center">
@@ -384,7 +376,7 @@ const MarketPage = () => {
                     <div className="text-center">No transactions available</div>
                   )}
                 </div>
-              )}
+              )} */}
 
               {tab === "Popular" && (
                 <div className="pb-10">

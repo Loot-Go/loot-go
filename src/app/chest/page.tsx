@@ -18,11 +18,13 @@ const ChestPage = () => {
   const userWallet = userWallets[0]?.address;
 
   const [token, setToken] = useState<{
-    amount: number;
-    image: string;
-    value: number;
-    txId: string;
+    amount?: number;
+    image?: string;
+    value?: number;
+    txId?: string;
+    error?: string;
   } | null>(null);
+  const [retry, setRetry] = useState(false);
 
   useEffect(() => {
     console.log(isLoggedIn);
@@ -85,7 +87,16 @@ const ChestPage = () => {
                 setLoading(true);
                 const data = await getRandomAirdrop(userWallet);
 
+                console.log(data);
+
                 if (data) {
+                  if (data.error) {
+                    setLoading(false);
+                    setRetry(true);
+                    return;
+                  }
+
+                  setRetry(false);
                   setToken(data);
                 }
 
@@ -98,7 +109,13 @@ const ChestPage = () => {
               }}
               className="min-w-[200px] rounded-full bg-gradient-to-t from-[#A9D600] to-[#D5FC44] p-5 px-5 font-bold text-[#000] shadow-lg transition-all duration-300 hover:scale-105"
             >
-              {loading ? "Loading..." : isOpen ? "COLLECT" : "OPEN CHEST"}
+              {loading
+                ? "Loading..."
+                : retry
+                  ? "RETRY"
+                  : isOpen
+                    ? "COLLECT"
+                    : "OPEN CHEST"}
             </button>
           </div>
           {token?.txId ? (

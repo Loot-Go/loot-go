@@ -22,12 +22,14 @@ const CoinCard = ({
       <img src={logo} className="h-[40px] w-[40px] rounded-full" alt="" />
       <div className="ml-4 flex-1">
         <div className="flex justify-between font-bold">
-          <span>${symbol}</span>
-          <b className="font-light">${price}</b>
+          <span>{symbol}</span>
+          <b className="font-light">
+            {price} ${symbol}
+          </b>
         </div>
 
         <div className="flex justify-between">
-          <span>{amount}</span>
+          <span>{symbol === "Bonk" ? "1 USD" : amount}</span>
           <div
             className={`flex items-center ${priceChange24h >= 0 ? "text-green-500" : "text-red-500"}`}
           >

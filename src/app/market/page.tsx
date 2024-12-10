@@ -20,6 +20,7 @@ type Coin = {
   symbol: string;
   value: number;
   amount: number;
+  name: string;
 };
 
 type TransactionType = {
@@ -353,6 +354,7 @@ const MarketPage = () => {
                     tokens.map((t, index) => (
                       <CoinCard
                         key={index}
+                        symbol={t.name}
                         logo={t.image}
                         price={t.value}
                         amount={t.amount}

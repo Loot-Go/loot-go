@@ -10,7 +10,6 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
-import CountUp from "react-countup";
 import { swap1INCH } from "./actions";
 import OrderModal from "./orderModal";
 
@@ -35,7 +34,7 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
 
   const searchParams = useSearchParams();
   const logo = searchParams?.get("logo");
-  const price = Number(searchParams?.get("price")) * 15353;
+  const price = Number(searchParams?.get("price"));
   const marketCap = searchParams?.get("marketCap");
   const [orderHash, setOrderHash] = useState<string>();
   const [openModal, setOpenModal] = useState(false);
@@ -117,14 +116,7 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
               className="h-[40px] w-[40px] rounded-full"
               alt=""
             />
-            <b className="mt-4 text-2xl font-bold">
-              ${" "}
-              <CountUp
-                duration={1}
-                className="counter"
-                end={Number(price ?? 0.42)}
-              />
-            </b>
+            <b className="mt-4 text-2xl font-bold">${price}</b>
             <Percentage percentage="4.5%" />
           </div>
 

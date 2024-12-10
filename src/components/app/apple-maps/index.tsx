@@ -1,5 +1,6 @@
 "use client";
 
+import { getNearbyRoadCoordinates } from "@/lib/globalActions";
 import { cn } from "@/lib/utils";
 import { Annotation, Map } from "mapkit-react";
 import Image from "next/image";
@@ -38,6 +39,12 @@ const AppleMaps: React.FC<MapsProps> = ({
   }>();
   const [accurateLocation, setAccurateLocation] = useState(false);
   const [cookies, setCookie] = useCookies(["user-location"]);
+  const [lootBoxCoordinates, setLootBoxCoordinates] = useState<
+    {
+      lat: number;
+      lng: number;
+    }[]
+  >();
 
   useLayoutEffect(() => {
     setMounted(true);
@@ -89,6 +96,29 @@ const AppleMaps: React.FC<MapsProps> = ({
     [setCookie],
   );
 
+  useEffect(() => {
+    if (!userCoordinates) return;
+
+    const timeout = setTimeout(async () => {
+      const cachedCoordinates = localStorage.getItem("loot-box-coordinates");
+      if (cachedCoordinates) {
+        setLootBoxCoordinates(JSON.parse(cachedCoordinates));
+        return;
+      }
+
+      const coordinates = await getNearbyRoadCoordinates(userCoordinates);
+      if (coordinates && coordinates.length > 0) {
+        setLootBoxCoordinates(coordinates);
+        localStorage.setItem(
+          "loot-box-coordinates",
+          JSON.stringify(coordinates),
+        );
+      }
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [userCoordinates]);
+
   return (
     <div
       className={cn(
@@ -125,6 +155,38 @@ const AppleMaps: React.FC<MapsProps> = ({
             }
           }}
         >
+          {lootBoxCoordinates?.map((coordinates, i) => (
+            <Annotation
+              key={"Lootbox" + i}
+              latitude={coordinates.lat}
+              longitude={coordinates.lng}
+            >
+              {false ? (
+                <div
+                  onClick={() => {
+                    toast.error("You must be closer to this chest to open it.");
+                  }}
+                >
+                  <Image
+                    height={40}
+                    width={40}
+                    src={`/${"box1"}.png`}
+                    alt="box"
+                  />
+                </div>
+              ) : (
+                <Link href={"/chest"}>
+                  <Image
+                    height={40}
+                    width={40}
+                    src={`/box${(i % 3) + 1}.png`}
+                    alt="box"
+                  />
+                </Link>
+              )}
+            </Annotation>
+          ))}
+
           {coordinatesArray
             ? coordinatesArray.map((coordinates) => (
                 <Annotation

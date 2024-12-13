@@ -275,7 +275,7 @@ const MarketPage = () => {
             {wallet ? (
               <div className="flex flex-col items-center justify-center">
                 <img
-                  src="https://lh3.googleusercontent.com/bFUFCqQ7SiFyLP6v8hosWh5bngKK1cNL_GdDcnEERG6_OcYZ-jKTwTUFNk98VUREAwqUKncnhdlXUfOMVx_KFK1IvWAXQtYxeN8"
+                  src="/user.jpg"
                   className="left-0 top-5 h-32 w-32 rounded-full"
                 />
                 {/* <Identity

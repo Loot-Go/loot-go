@@ -22,7 +22,7 @@ const DepositPage = () => {
       <div className="grid min-h-screen place-items-center pt-5 text-center">
         {userWallet ? (
           <div>
-            <p className="text-xl">Send USDC on Base</p>
+            <p className="text-xl">Send USDC on Solana</p>
             <section className="mt-5 flex justify-center">
               <div className="w-min rounded-2xl bg-white p-4">
                 <QRCode
@@ -36,7 +36,7 @@ const DepositPage = () => {
             </section>
 
             <div className="mt-5 flex flex-col items-center justify-between">
-              <p>Wallet address (Base)</p>
+              <p>Wallet address (Solana)</p>
               <p className="mt-2 flex items-center gap-2 text-xs">
                 {userWallet ?? ""}
                 <CopyToClipboard

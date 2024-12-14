@@ -10,7 +10,6 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
-import { swap1INCH } from "./actions";
 import OrderModal from "./orderModal";
 
 interface DetailsPageProps {
@@ -36,6 +35,7 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
   const logo = searchParams?.get("logo");
   const price = Number(searchParams?.get("price"));
   const marketCap = searchParams?.get("marketCap");
+  const [mode, setMode] = useState<string>();
   const [orderHash, setOrderHash] = useState<string>();
   const [openModal, setOpenModal] = useState(false);
 
@@ -73,25 +73,27 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
   };
 
   const buyHandler = async () => {
-    console.log("buyHandler");
-
-    setOrderHash(undefined);
+    setMode("buy");
     setOpenModal(true);
+    // console.log("buyHandler");
 
-    const orderHash = await swap1INCH();
-    console.log(orderHash);
-    setOrderHash(orderHash);
+    // setOrderHash(undefined);
+
+    // const orderHash = await swap1INCH();
+    // console.log(orderHash);
+    // setOrderHash(orderHash);
   };
 
   const sellHandler = async () => {
-    console.log("sellHandler");
-
-    setOrderHash(undefined);
+    setMode("sell");
     setOpenModal(true);
+    // console.log("sellHandler");
 
-    const orderHash = await swap1INCH();
-    console.log(orderHash);
-    setOrderHash(orderHash);
+    // setOrderHash(undefined);
+
+    // const orderHash = await swap1INCH();
+    // console.log(orderHash);
+    // setOrderHash(orderHash);
   };
 
   useEffect(() => {
@@ -169,7 +171,8 @@ const DetailsPage: FC<DetailsPageProps> = ({ params }) => {
       <OrderModal
         openModal={openModal}
         setOpenModal={setOpenModal}
-        orderHash={orderHash}
+        mode={mode ?? ""}
+        coin={coinId}
       />
     </>
   );

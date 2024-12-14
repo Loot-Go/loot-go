@@ -2,7 +2,6 @@
 
 import { DynamicContextProvider, getAuthToken } from "@/lib/dynamic";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-import { FlowWalletConnectors } from "@dynamic-labs/flow";
 import { SolanaWalletConnectors } from "@dynamic-labs/solana";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -37,7 +36,6 @@ export default function DynamicProvider({
           walletConnectors: [
             EthereumWalletConnectors,
             SolanaWalletConnectors as () => [],
-            FlowWalletConnectors,
           ],
           events: {
             onAuthSuccess: async () => {

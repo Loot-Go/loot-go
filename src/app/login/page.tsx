@@ -6,6 +6,7 @@ import {
   useDynamicContext,
 } from "@dynamic-labs/sdk-react-core";
 import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
@@ -76,9 +77,9 @@ export default function LoginPage() {
 
       {user ? (
         <div className="flex flex-col items-center gap-x-4 space-y-6">
-          <a className="text-gray-500" href="/chest">
+          <Link className="text-gray-500" href="/">
             Back to dashboard
-          </a>
+          </Link>
 
           <Button
             size={"icon"}
